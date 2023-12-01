@@ -1,4 +1,4 @@
-public enum AimDirection
+public enum Directions
 {
     Up,
     UpRight,
