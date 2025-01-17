@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public Text debugText;
     public float MOVESPEED = 5f;
 
     public Rigidbody2D rb;
@@ -29,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     public bool movementEnabled = true;
 
 
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -42,18 +46,21 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        /*
-        if (!movementEnabled)
-        {
-            rb.velocity = Vector2.zero;
-            return;
-        }
-        */
-        rb.velocity = currentMoveDirectionSmoothed * MOVESPEED;
+        if (!movementEnabled) return;
+
+        MovePlayer(currentMoveDirectionSmoothed, MOVESPEED);
+    }
+
+    public void MovePlayer(Vector2 direction, float speed)
+    {
+
+        rb.velocity = direction * speed;
     }
 
     void HandleMovement()
     {
+        if (!movementEnabled) return;
+
         float isMovingThreshold = 0.8f;
 
         float xInput = Input.GetAxis("Horizontal");
@@ -67,14 +74,14 @@ public class PlayerMovement : MonoBehaviour
         currentMoveDirectionSmoothed = (inputDirection.magnitude > 1 ? inputDirection.normalized : inputDirection);
         currentMoveDirectionRaw = (inputDirectionRaw.magnitude > 1 ? inputDirectionRaw.normalized : inputDirectionRaw);
 
-        // Current input direction
+        // Current input direction     
         currentInputAngle = Mathf.Atan2(yInput, xInput) * Mathf.Rad2Deg;
         currentInputDirection = HelperUtilities.GetNearestDirectionFromAngle(currentInputAngle);
 
         // Is moving or not
         isMoving = (currentMoveDirectionSmoothed.sqrMagnitude > (isMovingThreshold * isMovingThreshold));
 
-        HandleMovementIdleAnimations();
+        HandleMovementIdleAnimation();
 
         // Previous input and direction values
         previousMoveDirectionSmoothed = currentMoveDirectionSmoothed;
@@ -83,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
         previousIsMoving = isMoving;
     }
 
-    void HandleMovementIdleAnimations()
+    void HandleMovementIdleAnimation()
     {
         bool switchedDirections = (previousInputDirection != currentInputDirection);
         bool switchedToMoving = !previousIsMoving && isMoving;
@@ -99,13 +106,16 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("Right", false);
             animator.SetBool("Up Left", false);
             animator.SetBool("Up Right", false);
+            animator.SetBool("Down Left", false);
+            animator.SetBool("Down Right", false);
             animator.SetBool(currentInputDirection, true);
         }
     }
 
     void HandleAim()
     {
-        Vector3 mousePosition = HelperUtilities.GetMouseWorldPosition();
+        Vector3 mousePosition = HelperUtilities.GetMousePlayerPosition(this.transform);
+
         float angle = HelperUtilities.GetAngleFromVector(mousePosition);
         Directions currentMouseAimDirection = HelperUtilities.GetAimDirection(angle);
 
