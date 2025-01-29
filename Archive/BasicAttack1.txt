@@ -1,0 +1,24 @@
+[CreateAssetMenu(menuName = "Abilities/BasicAttack1")]
+public class BasicAttack1 : AbilityBase
+{
+    public float hitboxDuration = 0.2f;
+    public CircleCollider2D hitboxPrefab;
+
+    public override void StartAbility(AbilityManager manager, Vector2 direction)
+    {
+        manager.GetComponent<Animator>().Play("BasicAttack1");
+        manager.StartCoroutine(HitboxRoutine(manager));
+    }
+
+    private IEnumerator HitboxRoutine(AbilityManager manager)
+    {
+        var hitbox = manager.transform.Find("Hitboxes/BasicAttack1").GetComponent<CircleCollider2D>();
+        hitbox.enabled = true;
+        yield return new WaitForSeconds(hitboxDuration);
+        hitbox.enabled = false;
+    }
+
+    public override void UpdateAbility() { }
+    public override void EndAbility() { }
+    public override void InterruptAbility() { }
+}

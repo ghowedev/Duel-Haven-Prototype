@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class BasicAttack1 : MonoBehaviour
 {
+    public Animator animator;
     public CircleCollider2D hitboxCollider;
     public float delay = 0.2f;
     // Start is called before the first frame update
     void Start()
     {
         hitboxCollider = transform.Find("Hitboxes/BasicAttack1").gameObject.GetComponent<CircleCollider2D>();
-
-        Debug.Log("Hitbox collider: " + hitboxCollider);
     }
 
     // Update is called once per frame
@@ -19,21 +18,19 @@ public class BasicAttack1 : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Attack();
+            animator.ResetTrigger("BasicAttack1");
+            animator.SetTrigger("BasicAttack1");
+            // animator.Play("BasicAttack1");
         }
     }
 
-    public void Attack()
+    public void EnableHitbox()
     {
-        StartCoroutine(DelayAttack());
+        hitboxCollider.enabled = true;
     }
 
-    private IEnumerator DelayAttack()
+    public void DisableHitbox()
     {
-        yield return new WaitForSeconds(delay);
-        hitboxCollider.enabled = true;
-        yield return new WaitForSeconds(delay);
         hitboxCollider.enabled = false;
-
     }
 }

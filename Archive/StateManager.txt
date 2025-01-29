@@ -1,0 +1,99 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+// StateManager.cs
+public class StateManager : MonoBehaviour
+{
+    public enum PlayerState
+    {
+        IDLE,
+        CASTING_CHARGING,
+        CONTROLLED
+    }
+
+    // In StateManager.cs
+    public PlayerState GetCurrentState() => currentState;
+
+    public void SetState(PlayerState newState, CastingStateData? castData = null, ControlStateData? controlData = null)
+    {
+        currentState = newState;
+
+        switch (newState)
+        {
+            case PlayerState.IDLE:
+                playerController.movementEnabled = true;
+                break;
+
+            case PlayerState.CASTING_CHARGING:
+                if (castData != null)
+                {
+                    this.castingData = castData;
+                    playerController.movementEnabled = castData.canMove;
+                }
+                break;
+
+            case PlayerState.CONTROLLED:
+                if (controlData != null)
+                {
+                    this.controlData = controlData;
+                    playerController.movementEnabled = false;
+                }
+                break;
+        }
+    }
+
+    public enum CastingType
+    {
+        CAST,
+        CHARGE,
+        CHANNEL
+    }
+
+    public enum ControlType
+    {
+        STUN,
+        KNOCKBACK,
+        BREAK
+    }
+
+    [System.Serializable]
+    public class CastingStateData
+    {
+        public CastingType type;
+        public bool canMove;
+        public float chargeTime;
+        public AbilityBase ability;
+    }
+
+    [System.Serializable]
+    public class ControlStateData
+    {
+        public ControlType type;
+        public float duration;
+        public Vector2 direction;
+        public float speed;
+    }
+
+    private PlayerState currentState = PlayerState.IDLE;
+    private CastingStateData castingData;
+    private ControlStateData controlData;
+
+    // References
+    private AbilityManager abilityManager;
+    private PlayerMovementProto playerController;
+
+    private StateManager stateManager;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        stateManager = GetComponent<StateManager>();
+    }
+
+    void HandleMovement()
+    {
+        if (!movementEnabled || stateManager.GetCurrentState() != StateManager.PlayerState.IDLE) return;
+        // Rest of movement code
+    }
+}

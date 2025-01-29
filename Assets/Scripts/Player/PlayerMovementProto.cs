@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovementProto : MonoBehaviour
 {
+    public Text debugText;
     public Rigidbody2D rb;
+    public Animator animator;
+
     public float MOVESPEED = 5f;
     private Vector2 currentMoveDirectionSmoothed = Vector2.zero;
     private Vector2 currentMoveDirectionRaw = Vector2.zero;
@@ -17,15 +21,16 @@ public class PlayerMovementProto : MonoBehaviour
 
     private bool isMoving;
     private bool previousIsMoving;
-    private Directions currentAimDirection = Directions.Down;
-    [SerializeField]
-    private Transform firePointPivotPoint;
+    private Directions currentPlayerAimDirection = Directions.Down;
+    private Directions currentMouseAimDirection = Directions.Down;
+
     public bool movementEnabled = true;
 
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -72,6 +77,8 @@ public class PlayerMovementProto : MonoBehaviour
         // Is moving or not
         isMoving = (currentMoveDirectionSmoothed.sqrMagnitude > (isMovingThreshold * isMovingThreshold));
 
+        HandleMovementIdleAnimation();
+
         // Previous input and direction values
         previousMoveDirectionSmoothed = currentMoveDirectionSmoothed;
         previousMoveDirectionRaw = currentMoveDirectionRaw;
@@ -79,47 +86,42 @@ public class PlayerMovementProto : MonoBehaviour
         previousIsMoving = isMoving;
     }
 
+    void HandleMovementIdleAnimation()
+    {
+        bool switchedAimDirections = (currentMouseAimDirection != currentPlayerAimDirection);
+        bool switchedToMoving = !previousIsMoving && isMoving;
+        bool switchedToIdle = previousIsMoving && !isMoving;
+
+        // Set animations if switched directions or switched to idle
+        if (isMoving || switchedToMoving || (!isMoving && switchedToIdle))
+        {
+            animator.SetBool("Moving", isMoving);
+            animator.SetBool("Up", false);
+            animator.SetBool("Down", false);
+            animator.SetBool("Left", false);
+            animator.SetBool("Right", false);
+            animator.SetBool("UpLeft", false);
+            animator.SetBool("UpRight", false);
+            animator.SetBool("DownLeft", false);
+            animator.SetBool("DownRight", false);
+            animator.SetBool(currentMouseAimDirection.ToString(), true);
+        }
+
+    }
+
     void HandleAim()
     {
         Vector3 mousePosition = HelperUtilities.GetMousePlayerPosition(this.transform);
 
         float angle = HelperUtilities.GetAngleFromVector(mousePosition);
-        Directions currentMouseAimDirection = HelperUtilities.GetAimDirection(angle);
+        currentMouseAimDirection = HelperUtilities.GetAimDirection(angle);
 
-        if (currentAimDirection != currentMouseAimDirection)
+        debugText.text = angle.ToString();
+
+
+        if (currentPlayerAimDirection != currentMouseAimDirection)
         {
-            currentAimDirection = currentMouseAimDirection;
-
-
-            switch (currentAimDirection)
-            {
-                case Directions.Right:
-                    firePointPivotPoint.eulerAngles = new Vector3(0f, 0f, 90f);
-                    break;
-                case Directions.Down:
-                    firePointPivotPoint.eulerAngles = new Vector3(0f, 0f, 0f);
-                    break;
-                case Directions.Left:
-                    firePointPivotPoint.eulerAngles = new Vector3(0f, 0f, 270f);
-                    break;
-                case Directions.Up:
-                    firePointPivotPoint.eulerAngles = new Vector3(0f, 0f, 180f);
-                    break;
-                case Directions.UpRight:
-                    firePointPivotPoint.eulerAngles = new Vector3(0f, 0f, 135f);
-                    break;
-                case Directions.UpLeft:
-                    firePointPivotPoint.eulerAngles = new Vector3(0f, 0f, 225f);
-                    break;
-                case Directions.DownRight:
-                    firePointPivotPoint.eulerAngles = new Vector3(0f, 0f, 45f);
-                    break;
-                case Directions.DownLeft:
-                    firePointPivotPoint.eulerAngles = new Vector3(0f, 0f, 315f);
-                    break;
-            }
-
-
+            currentPlayerAimDirection = currentMouseAimDirection;
         }
     }
 }

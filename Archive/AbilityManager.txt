@@ -1,0 +1,111 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class AbilityManager : MonoBehaviour
+{
+    [SerializeField] private List<AbilityBase> abilities;
+    private StateManager stateManager;
+    private PlayerMovementProto playerMovement;
+    private Dictionary<AbilityBase, float> cooldowns = new Dictionary<AbilityBase, float>();
+    private AbilityBase currentAbility;
+
+    void Start()
+    {
+        stateManager = GetComponent<StateManager>();
+        playerMovement = GetComponent<PlayerMovementProto>();
+
+        foreach (var ability in abilities)
+        {
+            cooldowns[ability] = 0f;
+        }
+    }
+
+    void Update()
+    {
+        UpdateCooldowns();
+        HandleAbilityInput();
+    }
+
+    private void UpdateCooldowns()
+    {
+        foreach (var ability in cooldowns.Keys.ToList())
+        {
+            if (cooldowns[ability] > 0)
+            {
+                cooldowns[ability] -= Time.deltaTime;
+            }
+        }
+    }
+
+    private void HandleAbilityInput()
+    {
+        if (stateManager.GetCurrentState() != StateManager.PlayerState.IDLE) return;
+
+        // Example input check - modify based on your input system
+        if (Input.GetMouseButtonDown(0))
+        {
+            TryUseAbility(abilities[0]); // Basic attack
+        }
+    }
+
+    public void TryUseAbility(AbilityBase ability)
+    {
+        if (cooldowns[ability] <= 0)
+        {
+            UseAbility(ability);
+            cooldowns[ability] = ability.cooldownDuration;
+        }
+    }
+
+    private void UseAbility(AbilityBase ability)
+    {
+        currentAbility = ability;
+
+        if (ability.requiresCasting)
+        {
+            var castData = new CastingStateData
+            {
+                type = ability.castingType,
+                canMove = ability.canMoveWhileCasting,
+                ability = ability
+            };
+            stateManager.SetState(StateManager.PlayerState.CASTING_CHARGING, castData);
+        }
+
+        Vector2 direction = GetAbilityDirection();
+        ability.StartAbility(this, direction);
+    }
+
+    private Vector2 GetAbilityDirection()
+    {
+        // Use mouse position for direction
+        Vector3 mousePos = HelperUtilities.GetMousePlayerPosition(transform);
+        return new Vector2(mousePos.x, mousePos.y).normalized;
+    }
+
+    public void OnAbilityComplete()
+    {
+        currentAbility?.EndAbility();
+        currentAbility = null;
+        stateManager.SetState(StateManager.PlayerState.IDLE);
+        playerMovement.movementEnabled = true;
+    }
+
+    public void InterruptCurrentAbility()
+    {
+        if (currentAbility != null)
+        {
+            currentAbility.InterruptAbility();
+            currentAbility = null;
+            stateManager.SetState(StateManager.PlayerState.IDLE);
+            playerMovement.movementEnabled = true;
+        }
+    }
+
+    // Call this when hit by control effects
+    public void OnControlled()
+    {
+        InterruptCurrentAbility();
+    }
+}

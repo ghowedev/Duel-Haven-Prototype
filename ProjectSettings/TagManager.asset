@@ -21,7 +21,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Hitbox
   - IgnoreAmmo
   - Camera 1
   - Camera 2
@@ -51,11 +51,17 @@ TagManager:
   - name: Ground
     uniqueID: 3504611765
     locked: 0
+  - name: Behind Player
+    uniqueID: 1779298689
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
   - name: Weapon in Front
     uniqueID: 2672847621
+    locked: 0
+  - name: Front of Player
+    uniqueID: 3004411083
     locked: 0
   - name: Ground Decoration 1
     uniqueID: 2002717741
@@ -74,7 +80,4 @@ TagManager:
     locked: 0
   - name: Minimap
     uniqueID: 1491282665
-    locked: 0
-  - name: New Layer 8
-    uniqueID: 3004411083
     locked: 0

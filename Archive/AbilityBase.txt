@@ -1,0 +1,23 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using static StateManager;
+
+// AbilityBase.cs (abstract base class)
+public abstract class AbilityBase : ScriptableObject
+{
+    public string abilityName;
+    public float energyCost;
+    public float cooldownDuration;
+
+    // For casting/charging abilities
+    public bool requiresCasting;
+    public CastingType castingType;
+    public float castTime;
+    public bool canMoveWhileCasting;
+
+    public abstract void StartAbility(AbilityManager manager, Vector2 direction);
+    public abstract void UpdateAbility();
+    public abstract void EndAbility();
+    public abstract void InterruptAbility();
+}

@@ -63,10 +63,7 @@ public static class HelperUtilities
     {
         string direction = "Down";
 
-        if (angle < 0)
-        {
-            angle += 360;
-        }
+        angle = (angle + 360) % 360;
 
         if (angle < 22.5 || angle >= 337.5)
             direction = "Right";
@@ -93,57 +90,135 @@ public static class HelperUtilities
         return "Down";
     }
 
+
+    private static Directions currentDirection = Directions.Right;
+    private const float HYSTERESIS = 5f;  // Adjust this value as needed
+
     public static Directions GetAimDirection(float angle)
     {
-        Directions aimDirection;
+        // Normalize angle to 0-360
+        angle = (angle + 360) % 360;
 
-        if (angle > -22.5f && angle <= 22.5f)
+        // Get the angle thresholds for the current direction
+        float currentLowerThreshold = GetLowerThreshold(currentDirection);
+        float currentUpperThreshold = GetUpperThreshold(currentDirection);
+
+        // Add hysteresis to create a "sticky" zone around current direction
+        float hysteresisLower = (currentLowerThreshold - HYSTERESIS + 360) % 360;
+        float hysteresisUpper = (currentUpperThreshold + HYSTERESIS) % 360;
+
+        // Check if we're still within the hysteresis zone of current direction
+        if (IsAngleInRange(angle, hysteresisLower, hysteresisUpper))
         {
-            aimDirection = Directions.Right;
-        }
-        // Up-Right (Northeast): 22.5° to 67.5°
-        else if (angle > 22.5f && angle <= 67.5f)
-        {
-            aimDirection = Directions.UpRight;
-        }
-        // Up (North): 67.5° to 112.5°
-        else if (angle > 67.5f && angle <= 112.5f)
-        {
-            aimDirection = Directions.Up;
-        }
-        // Up-Left (Northwest): 112.5° to 157.5°
-        else if (angle > 112.5f && angle <= 157.5f)
-        {
-            aimDirection = Directions.UpLeft;
-        }
-        // Left (West): 157.5° to 180° OR -180° to -157.5°
-        else if (angle > 157.5f || angle <= -157.5f)
-        {
-            aimDirection = Directions.Left;
-        }
-        // Down-Left (Southwest): -157.5° to -112.5°
-        else if (angle > -157.5f && angle <= -112.5f)
-        {
-            aimDirection = Directions.DownLeft;
-        }
-        // Down (South): -112.5° to -67.5°
-        else if (angle > -112.5f && angle <= -67.5f)
-        {
-            aimDirection = Directions.Down;
-        }
-        // Down-Right (Southeast): -67.5° to -22.5°
-        else if (angle > -67.5f && angle <= -22.5f)
-        {
-            aimDirection = Directions.DownRight;
-        }
-        else
-        {
-            aimDirection = Directions.Right;
+            return currentDirection;
         }
 
-        return aimDirection;
-
+        // If we're outside the hysteresis zone, switch to new direction
+        currentDirection = GetDirectionFromAngle(angle);
+        return currentDirection;
     }
+
+    private static bool IsAngleInRange(float angle, float lower, float upper)
+    {
+        // Handle wrap-around at 360 degrees
+        if (lower > upper)
+        {
+            return angle >= lower || angle <= upper;
+        }
+        return angle >= lower && angle <= upper;
+    }
+
+    private static float GetLowerThreshold(Directions direction)
+    {
+        switch (direction)
+        {
+            case Directions.Right: return 337.5f;
+            case Directions.UpRight: return 22.5f;
+            case Directions.Up: return 67.5f;
+            case Directions.UpLeft: return 112.5f;
+            case Directions.Left: return 157.5f;
+            case Directions.DownLeft: return 202.5f;
+            case Directions.Down: return 247.5f;
+            case Directions.DownRight: return 292.5f;
+            default: return 337.5f;
+        }
+    }
+
+    private static float GetUpperThreshold(Directions direction)
+    {
+        switch (direction)
+        {
+            case Directions.Right: return 22.5f;
+            case Directions.UpRight: return 67.5f;
+            case Directions.Up: return 112.5f;
+            case Directions.UpLeft: return 157.5f;
+            case Directions.Left: return 202.5f;
+            case Directions.DownLeft: return 247.5f;
+            case Directions.Down: return 292.5f;
+            case Directions.DownRight: return 337.5f;
+            default: return 22.5f;
+        }
+    }
+
+    private static Directions GetDirectionFromAngle(float angle)
+    {
+        if (angle <= 22.5f || angle > 337.5f) return Directions.Right;
+        else if (angle <= 67.5f) return Directions.UpRight;
+        else if (angle <= 112.5f) return Directions.Up;
+        else if (angle <= 157.5f) return Directions.UpLeft;
+        else if (angle <= 202.5f) return Directions.Left;
+        else if (angle <= 247.5f) return Directions.DownLeft;
+        else if (angle <= 292.5f) return Directions.Down;
+        else return Directions.DownRight;
+    }
+
+
+
+
+
+    /*
+        public static Directions GetAimDirection(float angle)
+        {
+            // Normalize to 0-360
+            angle = (angle + 360) % 360;
+
+            // Now we can use simpler comparisons
+            if (angle <= 22.5f || angle > 337.5f)
+            {
+                return Directions.Right;
+            }
+            else if (angle <= 67.5f)
+            {
+                return Directions.UpRight;
+            }
+            else if (angle <= 112.5f)
+            {
+                return Directions.Up;
+            }
+            else if (angle <= 157.5f)
+            {
+                return Directions.UpLeft;
+            }
+            else if (angle <= 202.5f)
+            {
+                return Directions.Left;
+            }
+            else if (angle <= 247.5f)
+            {
+                return Directions.DownLeft;
+            }
+            else if (angle <= 292.5f)
+            {
+                return Directions.Down;
+            }
+            else if (angle <= 337.5f)
+            {
+                return Directions.DownRight;
+            }
+
+            return Directions.Right; // Fallback, though we shouldn't reach this
+        }
+    */
 
 
 }

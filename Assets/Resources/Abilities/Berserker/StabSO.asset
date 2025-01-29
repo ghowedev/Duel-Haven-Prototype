@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cee6a2efa68f9264ab0d5e3600328641, type: 3}
+  m_Name: StabSO
+  m_EditorClassIdentifier: 
+  abilityName: Stab
+  icon: {fileID: 0}
+  keybind: 324
+  cooldown: 5
+  damage: 0
+  energyCost: 0
+  animation: {fileID: 0}
+  range: 0
+  castType: 1
+  castTime: 0
+  chargeData:
+    minChargeTime: 0
+    maxChargeTime: 3
+    minDamage: 200
+    maxDamage: 500
+    chargeRate: 0
+  projectileData:
+    speed: 0
+    priority: 0
+    prefab: {fileID: 0}
