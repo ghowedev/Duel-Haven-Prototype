@@ -44,7 +44,6 @@ public class WeaponSocketPresetsSO : ScriptableObject
 
     public DirectionPreset GetPreset(Directions direction)
     {
-        Debug.Log(presetDictionary[direction]);
         return presetDictionary[direction];
     }
 }

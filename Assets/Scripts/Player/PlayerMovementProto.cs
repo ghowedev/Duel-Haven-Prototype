@@ -8,6 +8,7 @@ public class PlayerMovementProto : MonoBehaviour
     public Text debugText;
     public Rigidbody2D rb;
     public Animator animator;
+    public WeaponSocket WeaponSocket;
 
     public float MOVESPEED = 5f;
     private Vector2 currentMoveDirectionSmoothed = Vector2.zero;
@@ -105,6 +106,8 @@ public class PlayerMovementProto : MonoBehaviour
             animator.SetBool("DownLeft", false);
             animator.SetBool("DownRight", false);
             animator.SetBool(currentMouseAimDirection.ToString(), true);
+            animator.SetTrigger("WeaponBobReset");
+            WeaponSocket.UpdateSocketPosition(currentMouseAimDirection);
         }
 
     }

@@ -6,11 +6,14 @@ public class WeaponSocket : MonoBehaviour
 {
     [SerializeField]
     private WeaponSocketPresetsSO presets;
+    [SerializeField]
+    private GameObject Weapon;
+
 
     public void UpdateSocketPosition(Directions direction)
     {
         WeaponSocketPresetsSO.DirectionPreset preset = presets.GetPreset(direction);
         transform.localPosition = preset.position;
-        transform.localRotation = Quaternion.Euler(0, 0, preset.rotation);
+        Weapon.transform.localRotation = Quaternion.Euler(0, 0, preset.rotation);
     }
 }

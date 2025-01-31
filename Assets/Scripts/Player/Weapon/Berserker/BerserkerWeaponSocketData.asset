@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2fad4a9a691ad4b82d456d5485b810, type: 3}
+  m_Name: BerserkerWeaponSocketData
+  m_EditorClassIdentifier: 
+  directionPresets:
+  - direction: Down
+    position: {x: -0.156, y: -0.0937, z: 0}
+    rotation: 0
+    flipWeapon: 0
+  - direction: DownRight
+    position: {x: -0.125, y: -0.0938, z: 0}
+    rotation: 45
+    flipWeapon: 0
+  - direction: Right
+    position: {x: 0, y: -0.125, z: 0}
+    rotation: 90
+    flipWeapon: 0
+  - direction: UpRight
+    position: {x: 0.125, y: -0.094, z: 0}
+    rotation: 135
+    flipWeapon: 0
+  - direction: Up
+    position: {x: 0.156, y: -0.094, z: 0}
+    rotation: 180
+    flipWeapon: 0
+  - direction: UpLeft
+    position: {x: 0.125, y: -0.062, z: 0}
+    rotation: 225
+    flipWeapon: 0
+  - direction: Left
+    position: {x: 0, y: -0.125, z: 0}
+    rotation: 270
+    flipWeapon: 0
+  - direction: DownLeft
+    position: {x: -0.157, y: -0.062, z: 0}
+    rotation: 315
+    flipWeapon: 0
