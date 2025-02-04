@@ -21,8 +21,10 @@ public class AbilitySO : ScriptableObject
     public float range;
     public CastType castType;
     public float castTime;
-    public ChargeData chargeData;
+    public CastData castData;
     public ProjectileData projectileData;
+    public DisabledData disabledData;
+    public SlowData slowData;
 }
 
 //----------------------------------------
@@ -38,9 +40,19 @@ public class ProjectileData
 }
 
 [Serializable]
+public class CastData
+{
+    public CastType castType = CastType.NONE;
+    public float minChargeTime;
+    public float maxChargeTime;
+    public int minDamage;
+    public int maxDamage;
+    public float chargeRate;
+}
+[Serializable]
 public class DisabledData
 {
-    public DisabledType disabledType;
+    public DisabledType disabledType = DisabledType.NONE;
     public float duration;
     public float knockbackForce;
     public int breakAmount;
@@ -52,14 +64,4 @@ public class SlowData
     public float amount;
     public float duration;
     public float decay;
-}
-
-[Serializable]
-public class ChargeData
-{
-    public float minChargeTime;
-    public float maxChargeTime;
-    public int minDamage;
-    public int maxDamage;
-    public float chargeRate;  // How fast damage increases while charging
 }

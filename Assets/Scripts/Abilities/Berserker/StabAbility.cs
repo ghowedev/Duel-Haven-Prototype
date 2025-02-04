@@ -16,7 +16,7 @@ public class StabAbility : BaseAbility
 
     public override void UpdateAbility()
     {
-        if (animator.GetBool(isCharging) && currentChargeTime >= abilitySO.chargeData.maxChargeTime)
+        if (animator.GetBool(isCharging) && currentChargeTime >= abilitySO.castData.maxChargeTime)
         {
             ReleaseAbility();
         }
@@ -79,9 +79,9 @@ public class StabAbility : BaseAbility
 
     private int CalculateDamage()
     {
-        float damage = Mathf.Lerp(abilitySO.chargeData.minDamage,
-                         abilitySO.chargeData.maxDamage,
-                         currentChargeTime / abilitySO.chargeData.maxChargeTime);
+        float damage = Mathf.Lerp(abilitySO.castData.minDamage,
+                         abilitySO.castData.maxDamage,
+                         currentChargeTime / abilitySO.castData.maxChargeTime);
         return (int)damage;
     }
 }

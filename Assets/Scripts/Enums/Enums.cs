@@ -19,6 +19,7 @@ public enum PlayerState
 
 public enum CastType
 {
+    NONE,
     CAST,
     CHARGE,
     CHANNEL
@@ -26,6 +27,7 @@ public enum CastType
 
 public enum DisabledType
 {
+    NONE,
     STUN,
     KNOCKBACK,
     BREAK,
