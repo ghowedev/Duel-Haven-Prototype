@@ -26,6 +26,7 @@ public abstract class BaseAbility : MonoBehaviour
         PlayEffects();
         ApplyGameplayEffects();
         StartCooldown();
+        // abilitySO.SpawnProjectile(player);
     }
 
     protected abstract void StartAnimation();

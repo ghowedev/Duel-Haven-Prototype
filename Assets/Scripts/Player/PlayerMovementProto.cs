@@ -51,7 +51,7 @@ public class PlayerMovementProto : MonoBehaviour
     public void MovePlayer(Vector2 direction, float speed)
     {
 
-        rb.velocity = direction * speed;
+        rb.linearVelocity = direction * speed;
     }
 
     void HandleMovement()

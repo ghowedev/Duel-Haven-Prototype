@@ -2,39 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class AbilityManager : MonoBehaviour
+public class AbilityManager : MonoBehaviour
 {
-    protected Dictionary<KeyCode, BaseAbility> abilityBindings = new Dictionary<KeyCode, BaseAbility>();
-    protected List<BaseAbility> activeAbilities = new List<BaseAbility>();
+    public Player player;
+    protected Dictionary<KeyCode, AbilitySO> abilityBindings = new Dictionary<KeyCode, AbilitySO>();
+    public List<AbilitySO> abilitySO = new List<AbilitySO>();
 
-    protected abstract void InitializeAbilities();
-    protected abstract bool CanUseAbilities();
+    #region Start/Initialize
+    void Start()
+    {
+        InitializeAbilities();
+    }
+
+    protected void InitializeAbilities()
+    {
+        foreach (var ability in this.abilitySO)
+        {
+            if (abilityBindings.ContainsKey(ability.keybind) == false)
+                abilityBindings.Add(ability.keybind, ability);
+        }
+    }
+    #endregion
 
     protected virtual void Update()
     {
         foreach (var binding in abilityBindings)
         {
-            if (Input.GetKeyDown(binding.Key) && CanUseAbilities())
+            binding.Value.UpdateAbility(player);
+
+            if (Input.GetKeyDown(binding.Key) && CanUse())
             {
-                binding.Value.UseAbility();
-                activeAbilities.Add(binding.Value);
+                binding.Value.UseAbility(player);
             }
 
             if (Input.GetKey(binding.Key))
             {
-                binding.Value.UpdateAbility();
+                binding.Value.UpdateAbility(player);
             }
 
             if (Input.GetKeyUp(binding.Key))
             {
-                binding.Value.ReleaseAbility();
+                binding.Value.ReleaseAbility(player);
             }
         }
-
-        UpdateActiveAbilities();
+        // UpdateActiveAbilities();
         UpdateCooldowns();
     }
 
+    #region Resource Checks
     private bool CanUse()
     {
         return HasResources() && CooldownIsZero() && ActionableState();
@@ -54,17 +69,7 @@ public abstract class AbilityManager : MonoBehaviour
     {
         return true;
     }
-
-    private void UpdateActiveAbilities()
-    {
-        // Remove finished abilities
-        activeAbilities.RemoveAll(ability => !ability.isActive);
-
-        foreach (var ability in activeAbilities)
-        {
-            ability.UpdateAbility();
-        }
-    }
+    #endregion
 
     private void UpdateCooldowns()
     {
@@ -74,3 +79,14 @@ public abstract class AbilityManager : MonoBehaviour
         }
     }
 }
+
+// private void UpdateActiveAbilities()
+// {
+//     // Remove finished abilities
+//     activeAbilities.RemoveAll(ability => !ability.isActive);
+
+//     foreach (var ability in activeAbilities)
+//     {
+//         ability.UpdateAbility();
+//     }
+// }

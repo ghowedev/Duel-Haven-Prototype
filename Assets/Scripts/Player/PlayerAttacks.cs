@@ -84,7 +84,7 @@ public class PlayerAttacks : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        playerMovement.rb.velocity = Vector2.zero;
+        playerMovement.rb.linearVelocity = Vector2.zero;
         yield return new WaitForSeconds(dashEndLag);
         playerMovement.movementEnabled = true;
     }

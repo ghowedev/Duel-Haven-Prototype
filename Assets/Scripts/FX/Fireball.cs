@@ -14,6 +14,6 @@ public class Fireball : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.velocity = transform.right * velocity;
+        rb.linearVelocity = transform.right * velocity;
     }
 }
