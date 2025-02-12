@@ -4,15 +4,16 @@ using UnityEngine;
 
 public abstract class BaseAbility : MonoBehaviour
 {
-    public AbilitySO abilitySO;
+    protected AbilitySO _abilityData;
+    public AbilitySO abilityData => _abilityData;
     protected Animator animator;
 
-    private float currentCooldown;
-    private bool isOnCooldown;
+    protected float currentCooldown;
+    protected bool isOnCooldown;
 
     protected virtual void Start()
     {
-        animator = GetComponent<Animator>();
+        animator = GetComponentInParent<Animator>();
         if (animator == null)
         {
             Debug.LogError("Animator component not found on " + gameObject.name);
@@ -26,7 +27,7 @@ public abstract class BaseAbility : MonoBehaviour
         PlayEffects();
         ApplyGameplayEffects();
         StartCooldown();
-        // abilitySO.SpawnProjectile(player);
+        // _abilityData.SpawnProjectile(player);
     }
 
     protected abstract void StartAnimation();
@@ -35,7 +36,7 @@ public abstract class BaseAbility : MonoBehaviour
 
     public void StartCooldown()
     {
-        currentCooldown = abilitySO.cooldown;
+        currentCooldown = _abilityData.cooldown;
         isOnCooldown = true;
     }
 

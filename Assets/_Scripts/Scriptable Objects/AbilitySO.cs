@@ -7,7 +7,6 @@ using UnityEngine;
 public class AbilitySO : ScriptableObject
 {
     public string abilityName;
-    public MonoBehaviour abilityScript;
     public Sprite icon;
     public KeyCode keybind;
     public float cooldown;

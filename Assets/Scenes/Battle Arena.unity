@@ -348,7 +348,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  abilitySO: []
+  playerAbilities: {fileID: 0}
 --- !u!1 &69656966
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,11 +653,11 @@ GameObject:
   - component: {fileID: 194009468}
   - component: {fileID: 194009467}
   - component: {fileID: 194009466}
-  - component: {fileID: 194009465}
-  - component: {fileID: 194009464}
-  - component: {fileID: 194009463}
   - component: {fileID: 194009462}
+  - component: {fileID: 194009465}
   - component: {fileID: 194009469}
+  - component: {fileID: 194009464}
+  - component: {fileID: 194009470}
   m_Layer: 0
   m_Name: BP
   m_TagString: Untagged
@@ -701,22 +701,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.25
---- !u!114 &194009463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 194009460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b88ef9066e1a7a84dad5fdb575b6c79f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 194009469}
-  abilitySO:
-  - {fileID: 11400000, guid: a26f84c981b1b214ea30b977dc20527f, type: 2}
-  - {fileID: 11400000, guid: b3957b8d956442a42954f34002eb4b01, type: 2}
 --- !u!114 &194009464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -873,6 +857,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 194009465}
+--- !u!114 &194009470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 194009460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 952b96633b2ba33439a04acf08edd370, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 194009469}
+  playerAbilities: {fileID: 11400000, guid: cf53240f3a08afb46a0a970c8fcc0e1f, type: 2}
 --- !u!1 &234865734
 GameObject:
   m_ObjectHideFlags: 0
@@ -1182,7 +1180,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 2.8125
+  orthographic size: 4.21875
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

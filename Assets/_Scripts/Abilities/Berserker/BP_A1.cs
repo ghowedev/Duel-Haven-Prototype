@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class BP_A1 : BaseAbility
 {
+    void Update()
+    {
+
+    }
+
+
     protected override void ApplyGameplayEffects()
     {
+
     }
 
     protected override void PlayEffects()
@@ -15,5 +22,6 @@ public class BP_A1 : BaseAbility
 
     protected override void StartAnimation()
     {
+        base.animator.Play("BP_A1_down");
     }
 }
