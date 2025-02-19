@@ -7,6 +7,7 @@ public abstract class BaseAbility : MonoBehaviour
     protected AbilitySO _abilityData;
     public AbilitySO abilityData => _abilityData;
     protected Animator animator;
+    protected StateManager stateManager;
 
     protected float currentCooldown;
     protected bool isOnCooldown;
@@ -18,21 +19,28 @@ public abstract class BaseAbility : MonoBehaviour
         {
             Debug.LogError("Animator component not found on " + gameObject.name);
         }
+        stateManager = GetComponentInParent<StateManager>();
+        if (stateManager == null)
+        {
+            Debug.LogError("Animator component not found on " + gameObject.name);
+        }
+    }
+
+    public void Initialize(AbilitySO data)
+    {
+        this._abilityData = data;
     }
     public virtual bool isActive { get; protected set; }
 
     public virtual void UseAbility()
     {
-        StartAnimation();
-        PlayEffects();
-        ApplyGameplayEffects();
-        StartCooldown();
-        // _abilityData.SpawnProjectile(player);
+
     }
 
     protected abstract void StartAnimation();
-    protected abstract void PlayEffects();
-    protected abstract void ApplyGameplayEffects();
+    protected abstract void PlayFX();
+    protected abstract void PlayAudio();
+    protected abstract void ApplyCombatEffects();
 
     public void StartCooldown()
     {

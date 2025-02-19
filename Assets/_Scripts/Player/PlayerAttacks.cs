@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerAttacks : MonoBehaviour
 {
+    /*
     public Text debugText;
     public Animator animator;
     private PlayerMovement playerMovement;
@@ -103,5 +104,5 @@ public class PlayerAttacks : MonoBehaviour
         Transform fireball = Instantiate(pfFireball, firePoint.position, fireballRotation);
     }
 
-
+*/
 }

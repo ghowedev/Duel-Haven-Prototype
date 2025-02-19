@@ -6,10 +6,11 @@ using UnityEngine;
 public class AbilityManager : MonoBehaviour
 {
     public Player player;
-    public PlayerAbilities playerAbilities;
+    public List<AbilitySO> abilitySOs;
     protected Dictionary<KeyCode, BaseAbility> abilityBindings = new Dictionary<KeyCode, BaseAbility>();
-    private List<BaseAbility> abilities = new List<BaseAbility>();
+    private List<BaseAbility> abilityInstances = new List<BaseAbility>();
     private List<BaseAbility> activeAbilities = new List<BaseAbility>();
+    // private List<BaseAbility> activeAbilitiesToUpdate = new List<BaseAbility>();
 
     #region Start/Initialize
     void Start()
@@ -21,27 +22,31 @@ public class AbilityManager : MonoBehaviour
 
     protected void InitializeAbilities()
     {
-        foreach (var abilityName in playerAbilities.abilityList)
+        foreach (var abilityName in abilitySOs)
         {
             // Dynamically load the class (as a type) based on the ability name
-            Type abilityType = Type.GetType(abilityName);
+            // Type abilityType = Type.GetType(abilityName);
+            Type abilityType = abilityName.GetAbilityType();
 
-            if (abilityType != null && typeof(BaseAbility).IsAssignableFrom(abilityType))
-            {
-                // Add the ability as a component to the player
-                BaseAbility ability = player.gameObject.AddComponent(abilityType) as BaseAbility;
-                abilities.Add(ability);
-
-                // Add the ability to the keybinding dictionary if it has a keybind
-                if (ability != null && ability.abilityData.keybind != KeyCode.None && !abilityBindings.ContainsKey(ability.abilityData.keybind))
-                {
-                    abilityBindings.Add(ability.abilityData.keybind, ability);
-                }
-            }
-            else
+            if (abilityType == null || !typeof(BaseAbility).IsAssignableFrom(abilityType))
             {
                 Debug.LogWarning("Ability " + abilityName + " not found or is not of type BaseAbility.");
+                return;
             }
+
+            // Add the ability as a component to the player
+            BaseAbility ability = player.gameObject.AddComponent(abilityType) as BaseAbility;
+            abilityInstances.Add(ability);
+            ability.Initialize(abilityName);
+
+            // Add the ability to the keybinding dictionary if it has a keybind
+            if (ability != null && ability.abilityData.keybind != KeyCode.None && !abilityBindings.ContainsKey(ability.abilityData.keybind))
+            {
+                abilityBindings.Add(ability.abilityData.keybind, ability);
+            }
+
+
+
         }
     }
     #endregion
@@ -50,21 +55,15 @@ public class AbilityManager : MonoBehaviour
     {
         foreach (var binding in abilityBindings)
         {
+            if (!CanUse()) continue;
 
-            if (Input.GetKeyDown(binding.Key) && CanUse())
-            {
+            if (Input.GetKeyDown(binding.Key))
                 binding.Value.UseAbility();
-            }
-
-            if (Input.GetKey(binding.Key))
-            {
+            else if (Input.GetKey(binding.Key))
                 binding.Value.UpdateAbility();
-            }
-
-            if (Input.GetKeyUp(binding.Key))
-            {
+            else if (Input.GetKeyUp(binding.Key))
                 binding.Value.ReleaseAbility();
-            }
+
         }
         // UpdateActiveAbilities();
         UpdateCooldowns();

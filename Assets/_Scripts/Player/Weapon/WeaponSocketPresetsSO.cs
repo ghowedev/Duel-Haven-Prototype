@@ -7,7 +7,7 @@ public class WeaponSocketPresetsSO : ScriptableObject
     [System.Serializable]
     public class DirectionPreset
     {
-        public string direction;
+        public int direction;
         public Vector3 position;
         public float rotation;
         public bool flipWeapon;
@@ -16,20 +16,33 @@ public class WeaponSocketPresetsSO : ScriptableObject
     [SerializeField]
     private DirectionPreset[] directionPresets = new DirectionPreset[8];
 
-    private Dictionary<Directions, DirectionPreset> presetDictionary;
+    private Dictionary<int, DirectionPreset> presetDictionary;
 
     private void OnEnable()
     {
-        FillArrayWithDirectionNames();
+        // FillArrayWithDirectionNames();
         InitializePresetDictionary();
     }
 
+    /*
+        private void InitializePresetDictionary()
+        {
+            presetDictionary = new Dictionary<int, DirectionPreset>();
+            for (int i = 0; i < directionPresets.Length; i++)
+            {
+                presetDictionary.Add((int)i, directionPresets[i]);
+            }
+        }
+    */
+
     private void InitializePresetDictionary()
     {
-        presetDictionary = new Dictionary<Directions, DirectionPreset>();
-        for (int i = 0; i < directionPresets.Length; i++)
+        presetDictionary = new Dictionary<int, DirectionPreset>();
+
+        foreach (var preset in directionPresets)
         {
-            presetDictionary.Add((Directions)i, directionPresets[i]);
+            if (preset != null)
+                presetDictionary[preset.direction] = preset;
         }
     }
 
@@ -37,12 +50,12 @@ public class WeaponSocketPresetsSO : ScriptableObject
     {
         for (int i = 0; i < directionPresets.Length; i++)
         {
-            directionPresets[i].direction = ((Directions)i).ToString();
+            directionPresets[i].direction = ((int)i);
         }
 
     }
 
-    public DirectionPreset GetPreset(Directions direction)
+    public DirectionPreset GetPreset(int direction)
     {
         return presetDictionary[direction];
     }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
+    /*
     public Text debugText;
     public float MOVESPEED = 5f;
 
@@ -149,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
+*/
 }
 
 

@@ -13,35 +13,35 @@ MonoBehaviour:
   m_Name: BerserkerWeaponSocketData
   m_EditorClassIdentifier: 
   directionPresets:
-  - direction: Down
+  - direction: 2
     position: {x: -0.156, y: -0.0937, z: 0}
     rotation: 0
     flipWeapon: 0
-  - direction: DownRight
+  - direction: 3
     position: {x: -0.125, y: -0.0938, z: 0}
     rotation: 45
     flipWeapon: 0
-  - direction: Right
+  - direction: 6
     position: {x: 0, y: -0.125, z: 0}
     rotation: 90
     flipWeapon: 0
-  - direction: UpRight
+  - direction: 9
     position: {x: 0.125, y: -0.094, z: 0}
     rotation: 135
     flipWeapon: 0
-  - direction: Up
+  - direction: 8
     position: {x: 0.156, y: -0.094, z: 0}
     rotation: 180
     flipWeapon: 0
-  - direction: UpLeft
+  - direction: 7
     position: {x: 0.125, y: -0.062, z: 0}
     rotation: 225
     flipWeapon: 0
-  - direction: Left
+  - direction: 4
     position: {x: 0, y: -0.125, z: 0}
     rotation: 270
     flipWeapon: 0
-  - direction: DownLeft
+  - direction: 1
     position: {x: -0.157, y: -0.062, z: 0}
     rotation: 315
     flipWeapon: 0

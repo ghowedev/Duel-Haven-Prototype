@@ -10,7 +10,7 @@ public class WeaponSocket : MonoBehaviour
     private GameObject Weapon;
 
 
-    public void UpdateSocketPosition(Directions direction)
+    public void UpdateSocketPosition(int direction)
     {
         WeaponSocketPresetsSO.DirectionPreset preset = presets.GetPreset(direction);
         transform.localPosition = preset.position;

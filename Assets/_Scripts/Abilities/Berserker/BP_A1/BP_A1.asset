@@ -10,17 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cee6a2efa68f9264ab0d5e3600328641, type: 3}
-  m_Name: BP A1
+  m_Name: BP_A1
   m_EditorClassIdentifier: 
-  abilityName: Sword Swing
+  abilityType: BP_A1
   icon: {fileID: 0}
   keybind: 323
   cooldown: 1
   energyCost: 10
-  damageDataSO: {fileID: 11400000, guid: 8bab7a081f8adbf4196544a256f8daab, type: 2}
   animation: {fileID: 0}
   range: 0
-  castType: 0
   castTime: 0.3
+  damageDataSO: {fileID: 11400000, guid: 60334c9706ab80d40ba104ccbae8face, type: 2}
   castData: {fileID: 0}
   projectileData: {fileID: 11400000, guid: 6aed1e52d840f8f45ae7f868b4509f8f, type: 2}

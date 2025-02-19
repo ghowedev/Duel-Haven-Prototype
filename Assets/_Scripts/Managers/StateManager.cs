@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateManager : BaseState
+public class StateManager : MonoBehaviour
 {
-    /*private PlayerState currentState = PlayerState.IDLE;
+    private PlayerState currentState = PlayerState.IDLE;
     private CastType castChargeChannelType;
     private float chargeTime;
     private DisabledType disabledType;
@@ -68,5 +68,5 @@ public class StateManager : BaseState
     void Update()
     {
         OnStateUpdate(currentState);
-    }*/
+    }
 }

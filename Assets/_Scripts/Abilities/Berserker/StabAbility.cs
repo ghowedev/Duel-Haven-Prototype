@@ -35,7 +35,7 @@ public class StabAbility : BaseAbility
         currentChargeTime = 0f;
 
         StartAnimation();
-        PlayEffects();
+        PlayFX();
     }
 
     public override void ReleaseAbility()
@@ -45,7 +45,7 @@ public class StabAbility : BaseAbility
             Debug.Log("Stab! Damage: " + CalculateDamage());
 
             StartAnimation();
-            ApplyGameplayEffects();
+            ApplyCombatEffects();
             StartCooldown();
 
             isActive = false;
@@ -66,7 +66,7 @@ public class StabAbility : BaseAbility
         }
     }
 
-    protected override void ApplyGameplayEffects()
+    protected override void ApplyCombatEffects()
     {
         int damage = CalculateDamage();
         // Apply damage - you'll need references to:
@@ -75,7 +75,8 @@ public class StabAbility : BaseAbility
         // - Damage application system
     }
 
-    protected override void PlayEffects() { }
+    protected override void PlayFX() { }
+    protected override void PlayAudio() { }
 
     private int CalculateDamage()
     {

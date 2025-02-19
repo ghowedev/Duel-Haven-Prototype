@@ -6,25 +6,27 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Ability", menuName = "Ability/New Ability")]
 public class AbilitySO : ScriptableObject
 {
-    public string abilityName;
+    public string abilityType;
     public Sprite icon;
     public KeyCode keybind;
     public float cooldown;
     public int energyCost;
-    public DamageDataSO damageDataSO;
-
-    //optionals
     public Animation animation;
     public float range;
-    public CastType castType;
     public float castTime;
+    public DamageDataSO damageDataSO;
     public CastDataSO castData;
     public ProjectileDataSO projectileData;
-    // public DisabledData disabledData;
-    // public SlowData slowData;
 
 
-
+    public Type GetAbilityType()
+    {
+        return Type.GetType(abilityType);
+    }
+}
+// public DisabledData disabledData;
+// public SlowData slowData;
+/*
     public void SpawnProjectile(Player player)
     {
         if (projectileData)
@@ -50,18 +52,19 @@ public class AbilitySO : ScriptableObject
 
     public void UpdateCooldown(float deltaTime)
     {
-        // if (isOnCooldown)
-        // {
-        //     currentCooldown -= deltaTime;
-        //     if (currentCooldown <= 0)
-        //     {
-        //         currentCooldown = 0;
-        //         isOnCooldown = false;
-        //     }
-        // }
+        if (isOnCooldown)
+        {
+            currentCooldown -= deltaTime;
+            if (currentCooldown <= 0)
+            {
+                currentCooldown = 0;
+                isOnCooldown = false;
+            }
+        }
     }
 
 }
+*/
 
 //----------------------------------------
 // ----------Sub data structures----------
