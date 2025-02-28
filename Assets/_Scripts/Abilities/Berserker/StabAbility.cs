@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StabAbility : BaseAbility
+public class StabAbility : MonoBehaviour
 {
+    /*
     private float currentChargeTime = 0f;
     private string isCharging = "isCharging";
     private string stab = "Stab";
@@ -85,4 +86,5 @@ public class StabAbility : BaseAbility
                          currentChargeTime / _abilityData.castData.maxChargeTime);
         return (int)damage;
     }
+    */
 }

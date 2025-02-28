@@ -11,7 +11,12 @@ public class AbilitySO : ScriptableObject
     public KeyCode keybind;
     public float cooldown;
     public int energyCost;
+
     public Animation animation;
+    public AnimationClip animationClip;
+    public float animationClipLength;
+    public AudioClip audioClip;
+
     public float range;
     public float castTime;
     public DamageDataSO damageDataSO;
@@ -22,6 +27,13 @@ public class AbilitySO : ScriptableObject
     public Type GetAbilityType()
     {
         return Type.GetType(abilityType);
+    }
+
+    private void OnValidate()
+    {
+        if (animationClip == null) return;
+
+        animationClipLength = animationClip.length;
     }
 }
 // public DisabledData disabledData;

@@ -8,9 +8,13 @@ public abstract class BaseAbility : MonoBehaviour
     public AbilitySO abilityData => _abilityData;
     protected Animator animator;
     protected StateManager stateManager;
+    protected AnimationEventDispatcher animationEventDispatcher;
+    protected SoundEmitter soundEmitterOneShot;
+    protected SoundEmitter soundEmitterLooping;
 
     protected float currentCooldown;
     protected bool isOnCooldown;
+    public virtual bool isActive { get; protected set; }
 
     protected virtual void Start()
     {
@@ -19,10 +23,25 @@ public abstract class BaseAbility : MonoBehaviour
         {
             Debug.LogError("Animator component not found on " + gameObject.name);
         }
+
         stateManager = GetComponentInParent<StateManager>();
         if (stateManager == null)
         {
-            Debug.LogError("Animator component not found on " + gameObject.name);
+            Debug.LogError("State Manager component not found on " + gameObject.name);
+        }
+
+        animationEventDispatcher = GetComponentInParent<AnimationEventDispatcher>();
+        if (animationEventDispatcher == null)
+        {
+            Debug.LogError("Animation Event Dispatcher component not found on " + gameObject.name);
+        }
+
+        soundEmitterOneShot = GetComponentInParent<SoundEmitter>();
+        soundEmitterLooping = GetComponentInParent<SoundEmitter>();
+        if (soundEmitterOneShot == null || soundEmitterLooping == null)
+        {
+            Debug.Log(soundEmitterOneShot);
+            Debug.Log(soundEmitterLooping);
         }
     }
 
@@ -30,17 +49,7 @@ public abstract class BaseAbility : MonoBehaviour
     {
         this._abilityData = data;
     }
-    public virtual bool isActive { get; protected set; }
 
-    public virtual void UseAbility()
-    {
-
-    }
-
-    protected abstract void StartAnimation();
-    protected abstract void PlayFX();
-    protected abstract void PlayAudio();
-    protected abstract void ApplyCombatEffects();
 
     public void StartCooldown()
     {
@@ -61,28 +70,15 @@ public abstract class BaseAbility : MonoBehaviour
         }
     }
 
-    public virtual void Interrupt()
-    {
-
-    }
-
-    protected virtual void Cleanup()
-    {
-
-    }
-
-    public virtual void UpdateAbility()
-    {
-
-    }
-
-    public virtual void FixedUpdateAbility()
-    {
-
-    }
-
-    public virtual void ReleaseAbility()
-    {
-
-    }
+    public virtual void UseAbility() { }
+    public virtual void UpdateAbility() { }
+    protected abstract void StartAnimation();
+    protected abstract void PlayFX();
+    protected abstract void PlayAudio();
+    protected abstract void ApplyCombatEffects();
+    public abstract void Interrupt();
+    protected virtual void Cleanup() { }
+    public virtual void FixedUpdateAbility() { }
+    public virtual void ReleaseAbility() { }
+    protected virtual void OnAnimationComplete() { }
 }

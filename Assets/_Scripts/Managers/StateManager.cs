@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
+    private Animator animator;
     private PlayerState currentState = PlayerState.IDLE;
     private CastType castChargeChannelType;
     private float chargeTime;
@@ -12,6 +13,22 @@ public class StateManager : MonoBehaviour
     private Vector2 disabledDirection;
     private float disabledSpeed;
     public bool CanMove { get; private set; } = true;
+    private Dictionary<PlayerState, int> stateAnimatorInt = new Dictionary<PlayerState, int>
+{
+    { PlayerState.IDLE, 0 },      // IDLE maps to 0
+    { PlayerState.CASTING, 1 },   // CASTING maps to 1
+    { PlayerState.DISABLED, 2 }   // DISABLED maps to 2
+};
+
+
+    void Start()
+    {
+        animator = GetComponentInParent<Animator>();
+        if (animator == null)
+        {
+            Debug.LogError("Animator component not found on " + gameObject.name);
+        }
+    }
 
     public bool ChangeState(PlayerState newState)
     {
@@ -20,6 +37,8 @@ public class StateManager : MonoBehaviour
         OnStateExit(currentState);
         currentState = newState;
         OnStateEnter(newState);
+
+        animator.SetInteger("State", stateAnimatorInt[currentState]);
 
         return true;
     }

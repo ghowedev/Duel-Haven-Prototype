@@ -18,6 +18,9 @@ MonoBehaviour:
   cooldown: 1
   energyCost: 10
   animation: {fileID: 0}
+  animationClip: {fileID: 7400000, guid: 1bea4ec7b47461345804681462b72cf9, type: 2}
+  animationClipLength: 0.5
+  audioClip: {fileID: 0}
   range: 0
   castTime: 0.3
   damageDataSO: {fileID: 11400000, guid: 60334c9706ab80d40ba104ccbae8face, type: 2}

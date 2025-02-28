@@ -33,6 +33,8 @@ public class PlayerMovementProto : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         stateManager = GetComponent<StateManager>();
+
+        animator.SetInteger("Direction", 2);
     }
 
     // Update is called once per frame
