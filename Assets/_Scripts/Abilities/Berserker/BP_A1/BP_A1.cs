@@ -41,7 +41,7 @@ public class BP_A1 : BaseAbility
         // animator.SetInteger("Direction", 2);
         // animator.SetInteger("Ability", 1);
         // animator.SetTrigger("A1");
-        animator.Play("BP_A1_down");
+        animator.Play(abilityData.animationDirectionHashes[GetPlayerDirection()]);
         animationCoroutine = StartCoroutine(ReturnToIdleAfterAnimation());
     }
 

@@ -24,6 +24,7 @@ public class PlayerMovementProto : MonoBehaviour
     private bool previousIsMoving;
 
     private int currentPlayerAimDirection = 2;
+    public int CurrentPlayerAimDirection => currentPlayerAimDirection;
     private int currentMouseAimDirection = 2;
 
     private const float HYSTERESIS = 5f;

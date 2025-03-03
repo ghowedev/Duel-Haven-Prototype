@@ -11,6 +11,7 @@ public abstract class BaseAbility : MonoBehaviour
     protected AnimationEventDispatcher animationEventDispatcher;
     protected SoundEmitter soundEmitterOneShot;
     protected SoundEmitter soundEmitterLooping;
+    protected PlayerMovementProto playerMovement;
 
     protected float currentCooldown;
     protected bool isOnCooldown;
@@ -43,6 +44,12 @@ public abstract class BaseAbility : MonoBehaviour
             Debug.Log(soundEmitterOneShot);
             Debug.Log(soundEmitterLooping);
         }
+
+        playerMovement = GetComponentInParent<PlayerMovementProto>();
+        if (playerMovement == null)
+        {
+            Debug.LogError("PlayerMovementProto component not found on " + gameObject.name);
+        }
     }
 
     public void Initialize(AbilitySO data)
@@ -68,6 +75,16 @@ public abstract class BaseAbility : MonoBehaviour
                 isOnCooldown = false;
             }
         }
+    }
+
+    protected int GetPlayerDirection()
+    {
+        if (playerMovement != null)
+        {
+            return playerMovement.CurrentPlayerAimDirection;
+        }
+        Debug.Log("CurrentPlayerAimDirection null, returning 'down' by default");
+        return 2;
     }
 
     public virtual void UseAbility() { }

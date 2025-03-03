@@ -12,9 +12,13 @@ public class AbilitySO : ScriptableObject
     public float cooldown;
     public int energyCost;
 
-    public Animation animation;
-    public AnimationClip animationClip;
-    public float animationClipLength;
+    [Tooltip("Animation clips mapped to numpad directions (1-9, ignoring 5)")]
+    public AnimationClip[] animationDirectionClips = new AnimationClip[10];
+
+    [HideInInspector]
+    public int[] animationDirectionHashes = new int[10];
+    private float _animationClipLength;
+    public float animationClipLength => _animationClipLength;
     public AudioClip audioClip;
 
     public float range;
@@ -31,71 +35,44 @@ public class AbilitySO : ScriptableObject
 
     private void OnValidate()
     {
-        if (animationClip == null) return;
-
-        animationClipLength = animationClip.length;
-    }
-}
-// public DisabledData disabledData;
-// public SlowData slowData;
-/*
-    public void SpawnProjectile(Player player)
-    {
-        if (projectileData)
+        if (animationDirectionClips[2] != null)
         {
-            projectileData.Spawn();
+            _animationClipLength = animationDirectionClips[2].length;
+            // Debug.Log("Clip length is: " + animationClipLength + " seconds.");
+        }
+        GenerateAnimationHashes();
+
+
+    }
+
+    private void OnEnable()
+    {
+        // Fallback in case hashes weren't generated in editor
+        bool needsGeneration = false;
+        for (int i = 0; i < animationDirectionHashes.Length; i++)
+        {
+            if (animationDirectionClips[i] != null && animationDirectionHashes[i] == 0)
+            {
+                needsGeneration = true;
+                break;
+            }
+        }
+
+        if (needsGeneration)
+        {
+            GenerateAnimationHashes();
         }
     }
 
-    public void UpdateAbility(Player player)
+    private void GenerateAnimationHashes()
     {
-
-    }
-
-    public void UseAbility(Player player)
-    {
-        SpawnProjectile(player);
-    }
-
-    public void ReleaseAbility(Player player)
-    {
-
-    }
-
-    public void UpdateCooldown(float deltaTime)
-    {
-        if (isOnCooldown)
+        for (int i = 0; i < animationDirectionClips.Length; i++)
         {
-            currentCooldown -= deltaTime;
-            if (currentCooldown <= 0)
+            if (animationDirectionClips[i] != null)
             {
-                currentCooldown = 0;
-                isOnCooldown = false;
+                animationDirectionHashes[i] = Animator.StringToHash(animationDirectionClips[i].name);
+                // Debug.Log(animationDirectionClips[i].name + ": " + animationDirectionHashes[i]);
             }
         }
     }
-
 }
-*/
-
-//----------------------------------------
-// ----------Sub data structures----------
-//----------------------------------------
-
-
-// [Serializable]
-// public class DisabledData
-// {
-//     public DisabledType disabledType = DisabledType.NONE;
-//     public float duration;
-//     public float knockbackForce;
-//     public int breakAmount;
-// }
-
-// [Serializable]
-// public class SlowData
-// {
-//     public float amount;
-//     public float duration;
-//     public float decay;
-// }
